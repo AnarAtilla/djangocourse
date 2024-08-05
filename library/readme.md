@@ -9,79 +9,117 @@ Library - это приложение для управления библиот
    ```bash
    git clone <URL_репозитория>
    cd library
-   ```
+   
+Создайте и активируйте виртуальное окружение:  
+python -m venv venv
+source venv/bin/activate  # Для Windows: venv\Scripts\activate
+Установите зависимости:  
+pip install -r requirements.txt
+Выполните миграции базы данных:  
+python manage.py makemigrations
+python manage.py migrate
+Создайте суперпользователя:  
+python manage.py createsuperuser
+Запустите сервер разработки:  
+python manage.py runserver
+Использование
+После запуска сервера, вы можете получить доступ к приложению по адресу http://127.0.0.1:8000/. Вот основные URL-адреса:  
+/admin/: Административная панель Django.
+/books/: Список книг.
+/authors/: Список авторов.
+/publishers/: Список издателей.
+/readers/: Список читателей.
+/orders/: Список заказов.
+Модели
+Author
+first_name: CharField (max_length=50)
+last_name: CharField (max_length=50)
+birth_date: DateField (null=True, blank=True)
+Publisher
+name: CharField (max_length=100, unique=True)
+address: CharField (max_length=255, null=True, blank=True)
+website: URLField (null=True, blank=True)
+Book
+title: CharField (max_length=200)
+author: ForeignKey (Author, on_delete=models.PROTECT, related_name='books')
+publisher: ForeignKey (Publisher, on_delete=models.PROTECT, related_name='books')
+publication_date: DateField (null=True, blank=True)
+isbn: CharField (max_length=13, unique=True)
+price: DecimalField (max_digits=10, decimal_places=2)
+stock: IntegerField
+Reader
+first_name: CharField (max_length=50)
+last_name: CharField (max_length=50)
+email: EmailField (unique=True)
+phone_number: CharField (max_length=15)
+address: CharField (max_length=255, null=True, blank=True)
+date_joined: DateTimeField (auto_now_add=True)
+Order
+order_date: DateTimeField (auto_now_add=True)
+reader: ForeignKey (Reader, on_delete=models.PROTECT, related_name='orders')
+OrderItem
+order: ForeignKey (Order, on_delete=models.CASCADE, related_name='order_items')
+book: ForeignKey (Book, on_delete=models.PROTECT, related_name='order_items')
+quantity: PositiveSmallIntegerField
+price: DecimalField (max_digits=10, decimal_places=2)
+Административная панель
+Для управления моделями через административную панель Django, зарегистрируйте модели в admin.py:Создайте и активируйте виртуальное окружение:  
+python -m venv venv
+source venv/bin/activate  # Для Windows: venv\Scripts\activate
+Установите зависимости:  
+pip install -r requirements.txt
+Выполните миграции базы данных:  
+python manage.py makemigrations
+python manage.py migrate
+Создайте суперпользователя:  
+python manage.py createsuperuser
+Запустите сервер разработки:  
+python manage.py runserver
+Использование
+После запуска сервера, вы можете получить доступ к приложению по адресу http://127.0.0.1:8000/. Вот основные URL-адреса:  
+/admin/: Административная панель Django.
+/books/: Список книг.
+/authors/: Список авторов.
+/publishers/: Список издателей.
+/readers/: Список читателей.
+/orders/: Список заказов.
+Модели
+Author
+first_name: CharField (max_length=50)
+last_name: CharField (max_length=50)
+birth_date: DateField (null=True, blank=True)
+Publisher
+name: CharField (max_length=100, unique=True)
+address: CharField (max_length=255, null=True, blank=True)
+website: URLField (null=True, blank=True)
+Book
+title: CharField (max_length=200)
+author: ForeignKey (Author, on_delete=models.PROTECT, related_name='books')
+publisher: ForeignKey (Publisher, on_delete=models.PROTECT, related_name='books')
+publication_date: DateField (null=True, blank=True)
+isbn: CharField (max_length=13, unique=True)
+price: DecimalField (max_digits=10, decimal_places=2)
+stock: IntegerField
+Reader
+first_name: CharField (max_length=50)
+last_name: CharField (max_length=50)
+email: EmailField (unique=True)
+phone_number: CharField (max_length=15)
+address: CharField (max_length=255, null=True, blank=True)
+date_joined: DateTimeField (auto_now_add=True)
+Order
+order_date: DateTimeField (auto_now_add=True)
+reader: ForeignKey (Reader, on_delete=models.PROTECT, related_name='orders')
+OrderItem
+order: ForeignKey (Order, on_delete=models.CASCADE, related_name='order_items')
+book: ForeignKey (Book, on_delete=models.PROTECT, related_name='order_items')
+quantity: PositiveSmallIntegerField
+price: DecimalField (max_digits=10, decimal_places=2)
 
-2. Создайте и активируйте виртуальное окружение:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # Для Windows: venv\Scripts\activate
-   ```
+Административная панель
 
-3. Установите зависимости:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. Выполните миграции базы данных:
-   ```bash
-   python manage.py makemigrations
-   python manage.py migrate
-   ```
-
-5. Создайте суперпользователя:
-   ```bash
-   python manage.py createsuperuser
-   ```
-
-6. Запустите сервер разработки:
-   ```bash
-   python manage.py runserver
-   ```
-
-## Модели
-
-### Author
-- `first_name`: CharField (max_length=50)
-- `last_name`: CharField (max_length=50)
-- `birth_date`: DateField (null=True, blank=True)
-
-### Publisher
-- `name`: CharField (max_length=100, unique=True)
-- `address`: CharField (max_length=255, null=True, blank=True)
-- `website`: URLField (null=True, blank=True)
-
-### Book
-- `title`: CharField (max_length=200)
-- `author`: ForeignKey (Author, on_delete=models.PROTECT, related_name='books')
-- `publisher`: ForeignKey (Publisher, on_delete=models.PROTECT, related_name='books')
-- `publication_date`: DateField (null=True, blank=True)
-- `isbn`: CharField (max_length=13, unique=True)
-- `price`: DecimalField (max_digits=10, decimal_places=2)
-- `stock`: IntegerField
-
-### Reader
-- `first_name`: CharField (max_length=50)
-- `last_name`: CharField (max_length=50)
-- `email`: EmailField (unique=True)
-- `phone_number`: CharField (max_length=15)
-- `address`: CharField (max_length=255, null=True, blank=True)
-- `date_joined`: DateTimeField (auto_now_add=True)
-
-### Order
-- `order_date`: DateTimeField (auto_now_add=True)
-- `reader`: ForeignKey (Reader, on_delete=models.PROTECT, related_name='orders')
-
-### OrderItem
-- `order`: ForeignKey (Order, on_delete=models.CASCADE, related_name='order_items')
-- `book`: ForeignKey (Book, on_delete=models.PROTECT, related_name='order_items')
-- `quantity`: PositiveSmallIntegerField
-- `price`: DecimalField (max_digits=10, decimal_places=2)
-
-## Административная панель
-
-Для управления моделями через административную панель Django, зарегистрируйте модели в `admin.py`:
-
-```python
+Для управления моделями через административную панель Django,
+зарегистрируйте модели в admin.py:
 from django.contrib import admin
 from .models import Author, Publisher, Book, Reader, Order, OrderItem
 
@@ -120,8 +158,9 @@ class OrderAdmin(admin.ModelAdmin):
     search_fields = ('reader__first_name', 'reader__last_name', 'reader__email')
     ordering = ('-order_date',)
     inlines = [OrderItemInline]
-```
 
-## Лицензия
-
-Этот проект лицензирован под лицензией MIT.
+Лицензия
+Этот проект лицензирован под лицензией MIT.  
+Контактные данные
+Этот README.md файл предоставляет основную информацию о проекте, его установке и использовании, а также контактные данные автора. Это поможет другим студентам 
+и преподавателям быстро понять суть проекта и его возможности.
