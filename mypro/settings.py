@@ -26,7 +26,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'library',
-    'lagerhouse'
+    'lagerhouse',
+    'task_manager',
 ]
 
 MIDDLEWARE = [
