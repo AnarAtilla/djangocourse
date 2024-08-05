@@ -25,17 +25,17 @@ MyPro — это проект, состоящий из двух приложен
    git clone <URL_репозитория>
    cd MyPro
    
-Создайте и активируйте виртуальное окружение:  
+## Создайте и активируйте виртуальное окружение:  
 python -m venv venv
 source venv/bin/activate  # Для Windows: venv\Scripts\activate
-Установите зависимости:  
+## Установите зависимости:  
 pip install -r requirements.txt
-Примените миграции:  
+## Примените миграции:  
 python manage.py makemigrations
 python manage.py migrate
-Создайте суперпользователя:  
+## Создайте суперпользователя:  
 python manage.py createsuperuser
-Запустите сервер:  
+## Запустите сервер:  
 python manage.py runserver
 Использование
 После запуска сервера, вы можете получить доступ к приложениям по следующим URL-адресам:  
