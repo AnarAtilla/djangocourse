@@ -11,25 +11,25 @@ Library - это приложение для управления библиот
    cd library
 
 
-1. Создайте и активируйте виртуальное окружение:
+## 1. Создайте и активируйте виртуальное окружение:
 
 python -m venv venv
 source venv/bin/activate  # Для Windows: venv\Scripts\activate
 
-2. Установите зависимости:
+## 2. Установите зависимости:
 
 pip install -r requirements.txt
 
-3. Выполните миграции базы данных:
+## 3. Выполните миграции базы данных:
 
 python manage.py makemigrations
 python manage.py migrate
 
-4. Создайте суперпользователя:
+## 4. Создайте суперпользователя:
 
 python manage.py createsuperuser
 
-Использование
+## Использование
 После запуска сервера, вы можете получить доступ к приложению по адресу http://127.0.0.1:8000/. Вот основные URL-адреса:
 
 /admin/: Административная панель Django.
@@ -44,7 +44,7 @@ python manage.py createsuperuser
 
 /orders/: Список заказов.
 
-Модели
+## Модели
 Author
 first_name: CharField (max_length=50)
 
@@ -101,7 +101,7 @@ quantity: PositiveSmallIntegerField
 
 price: DecimalField (max_digits=10, decimal_places=2)
 
-Административная панель
+## Административная панель
 Для управления моделями через административную панель Django, зарегистрируйте модели в admin.py:
 
 from django.contrib import admin
@@ -143,8 +143,8 @@ class OrderAdmin(admin.ModelAdmin):
     ordering = ('-order_date',)
     inlines = [OrderItemInline]
 
-Лицензия
+##Лицензия
 Этот проект лицензирован под лицензией MIT.
 
-Контактные данные
+## Контактные данные
 Этот README.md файл предоставляет основную информацию о проекте, его установке и использовании, а также контактные данные автора. Это поможет другим студентам и преподавателям быстро понять суть проекта и его возможности.
