@@ -30,6 +30,7 @@ MyPro — это проект, состоящий из трех приложен
    ```bash
    git clone <URL_репозитория>
    cd MyPro
+   
    ## 1. Создайте и активируйте виртуальное окружение:
    python -m venv venv
 source venv/bin/activate  # Для Windows: venv\Scripts\activate
