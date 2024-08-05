@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import (Author, Book, Category, Library, Member, Posts, Borrow, Review, AuthorDetail, Event,
+
+from .models import (Author, Category, Library, Member, Posts, Borrow, Review, AuthorDetail, Event,
                      EventParticipant)
-from django.contrib import admin
 from .models import Book
 
 
