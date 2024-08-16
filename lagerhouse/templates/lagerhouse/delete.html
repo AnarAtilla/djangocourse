@@ -1,0 +1,18 @@
+<!-- lagerhouse/templates/lagerhouse/delete.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Delete Record</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <h1>Delete Record</h1>
+    <p>Are you sure you want to delete "{{ instance.name }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Yes, Delete</button>
+    </form>
+    <a href="{% url 'list_view' %}">Cancel</a>
+</body>
+</html>

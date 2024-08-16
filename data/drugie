@@ -1,0 +1,82 @@
+#Получение всех деталей продукта для конкретного продукта:
+from lagerhouse.models import Product, ProductDetail
+
+product_id = 1  # Замените на ID нужного продукта
+product = Product.objects.get(id=product_id)
+product_details = ProductDetail.objects.filter(product=product)
+for detail in product_details:
+    print(f"Detail ID: {detail.id}, Description: {detail.description}, Manufacturing Date: {detail.manufacturing_date}, Expiration Date: {detail.expiration_date}, Weight: {detail.weight}")
+
+#Получение всех продуктов для конкретного поставщика:
+from lagerhouse.models import Supplier, Product
+
+supplier_id = 1  # Замените на ID нужного поставщика
+supplier = Supplier.objects.get(id=supplier_id)
+products = Product.objects.filter(supplier=supplier)
+for product in products:
+    print(f"Product ID: {product.id}, Name: {product.name}, Price: {product.price}")
+
+#Получение всех продуктов для конкретной категории:
+from lagerhouse.models import Category, Product
+
+category_id = 1  # Замените на ID нужной категории
+category = Category.objects.get(id=category_id)
+products = Product.objects.filter(category=category)
+for product in products:
+    print(f"Product ID: {product.id}, Name: {product.name}, Price: {product.price}")
+
+#Получение всех заказов для конкретного клиента:
+from lagerhouse.models import Customer, Order
+
+customer_id = 1  # Замените на ID нужного клиента
+customer = Customer.objects.get(id=customer_id)
+orders = Order.objects.filter(customer=customer)
+for order in orders:
+    print(f"Order ID: {order.id}, Date: {order.order_date}")
+
+#Получение всех позиций заказа для конкретного заказа:
+from lagerhouse.models import Order, OrderItem
+
+order_id = 1  # Замените на ID нужного заказа
+order = Order.objects.get(id=order_id)
+order_items = OrderItem.objects.filter(order=order)
+for item in order_items:
+    print(f"Order Item ID: {item.id}, Product: {item.product.name}, Quantity: {item.quantity}, Price: {item.price}")
+
+#Получение всех поставщиков:
+from lagerhouse.models import Supplier
+
+suppliers = Supplier.objects.all()
+for supplier in suppliers:
+    print(f"Supplier ID: {supplier.id}, Name: {supplier.name}, Email: {supplier.contact_email}")
+
+#Получение всех категорий:
+from lagerhouse.models import Category
+
+categories = Category.objects.all()
+for category in categories:
+    print(f"Category ID: {category.id}, Name: {category.name}")
+
+#Получение всех продуктов:
+
+from lagerhouse.models import Product
+
+products = Product.objects.all()
+for product in products:
+    print(f"Product ID: {product.id}, Name: {product.name}, Price: {product.price}, Quantity: {product.quantity}")
+
+# Получение всех клиентов:
+from lagerhouse.models import Customer
+
+customers = Customer.objects.all()
+for customer in customers:
+    print(f"Customer ID: {customer.id}, Name: {customer.first_name} {customer.last_name}, Email: {customer.email}")
+
+
+# Получение всех заказов:
+
+from lagerhouse.models import Order
+
+orders = Order.objects.all()
+for order in orders:
+    print(f"Order ID: {order.id}, Customer: {order.customer.first_name} {order.customer.last_name}, Date: {order.order_date}")

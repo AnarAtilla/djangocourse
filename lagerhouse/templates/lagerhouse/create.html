@@ -1,0 +1,18 @@
+<!-- lagerhouse/templates/lagerhouse/create.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Create Record</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <h1>Create Record</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create</button>
+    </form>
+    <a href="{% url 'list_view' %}">Back to List</a>
+</body>
+</html>

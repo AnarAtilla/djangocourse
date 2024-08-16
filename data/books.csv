@@ -1,0 +1,11 @@
+title,author,publishing_date,category,publisher,genre,page_count,birth_date,libraries
+"1984","George Orwell","1949-06-08","Fiction","Secker & Warburg","Dystopian",328,"1903-06-25","Library A,Library B"
+"To Kill a Mockingbird","Harper Lee","1960-07-11","Fiction","J. B. Lippincott & Co.","Classic",281,"1926-04-28","Library B,Library C"
+"Pride and Prejudice","Jane Austen","1813-01-28","Fiction","T. Egerton, Whitehall","Romance",279,"1775-12-16","Library A,Library C"
+"The Great Gatsby","F. Scott Fitzgerald","1925-04-10","Fiction","Charles Scribner's Sons","Tragedy",180,"1896-09-24","Library B,Library D"
+"Animal Farm","George Orwell","1945-08-17","Fiction","Secker & Warburg","Satire",112,"1903-06-25","Library A,Library D"
+"Brave New World","Aldous Huxley","1932-05-17","Fiction","Chatto & Windus","Dystopian",288,"1894-07-26","Library C,Library D"
+"The Catcher in the Rye","J.D. Salinger","1951-07-16","Fiction","Little, Brown and Company","Coming-of-age",277,"1919-01-01","Library A,Library B"
+"Fahrenheit 451","Ray Bradbury","1953-10-19","Fiction","Ballantine Books","Dystopian",194,"1920-08-22","Library B,Library C"
+"Moby-Dick","Herman Melville","1851-10-18","Fiction","Harper & Brothers","Adventure",624,"1819-08-01","Library A,Library D"
+"War and Peace","Leo Tolstoy","1869-01-01","Fiction","The Russian Messenger","Historical novel",1225,"1828-09-09","Library C,Library D"

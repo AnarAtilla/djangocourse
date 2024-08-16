@@ -1,0 +1,18 @@
+<!-- lagerhouse/templates/lagerhouse/update.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Update Record</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <h1>Update Record</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update</button>
+    </form>
+    <a href="{% url 'list_view' %}">Back to List</a>
+</body>
+</html>

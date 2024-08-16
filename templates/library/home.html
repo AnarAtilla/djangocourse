@@ -1,0 +1,23 @@
+<!-- templates/library/home.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Library Home</title>
+</head>
+<body>
+    <h1>Welcome to the Library!</h1>
+    <ul>
+        <li><a href="{% url 'author-list' %}">Authors</a></li>
+        <li><a href="{% url 'book-list' %}">Books</a></li>
+        <li><a href="{% url 'member-list' %}">Members</a></li>
+        <li><a href="{% url 'borrow-list' %}">Borrows</a></li>
+        <li><a href="{% url 'event-list' %}">Events</a></li>
+        <li><a href="{% url 'posts-list' %}">Posts</a></li>
+        <li><a href="{% url 'category-list' %}">Categories</a></li>
+        <li><a href="{% url 'library-list' %}">Libraries</a></li>
+        <li><a href="{% url 'review-list' %}">Reviews</a></li>
+        <li><a href="{% url 'author-detail-list' %}">Author Details</a></li>
+        <li><a href="{% url 'event-participant-list' %}">Event Participants</a></li>
+    </ul>
+</body>
+</html>

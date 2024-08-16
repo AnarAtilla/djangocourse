@@ -1,0 +1,15 @@
+<!-- templates/task_manager/home.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Task Manager Home</title>
+</head>
+<body>
+    <h1>Welcome to the Task Manager!</h1>
+    <ul>
+        <li><a href="{% url 'task-create' %}">Create Task</a></li>
+        <li><a href="{% url 'task-list' %}">List Tasks</a></li>
+        <li><a href="{% url 'task-stats' %}">Task Stats</a></li>
+    </ul>
+</body>
+</html>

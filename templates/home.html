@@ -1,0 +1,20 @@
+<!-- templates/home.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>My Project</title>
+    {% load static %}  <!-- Загрузка статических файлов -->
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <h1>Welcome to My Project</h1>
+    <!-- Links to other applications -->
+    <ul>
+        <li><a href="/library/home/">Library Home</a></li>
+        <li><a href="/task_manager/">Task_Manager Home</a></li>
+        <li><a href="/admin/">Admin</a></li>
+        <li><a href="/lagerhouse/home/">Lagerhouse Home</a></li>
+        <li><a href="/project_tasks/home/">Project_Tasks Home</a></li>
+    </ul>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!-- templates/project_tasks/home.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Project Tasks Home</title>
+</head>
+<body>
+    <h1>Welcome to the Project Tasks!</h1>
+    <ul>
+        <li><a href="{% url 'event-list-create' %}">Events</a></li>
+        <li><a href="{% url 'task-list-create' %}">Tasks</a></li>
+        <li><a href="{% url 'project-list-create' %}">Projects</a></li>
+        <li><a href="{% url 'tag-list-create' %}">Tags</a></li>
+        <li><a href="{% url 'projectfile-list-create' %}">Project Files</a></li>
+    </ul>
+</body>
+</html>

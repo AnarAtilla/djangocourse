@@ -1,0 +1,26 @@
+<!-- lagerhouse/templates/lagerhouse/list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>List of Records</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <h1>List of Records</h1>
+    <form method="get">
+        <input type="text" name="q" placeholder="Search..." value="{{ request.GET.q }}">
+        <button type="submit">Search</button>
+    </form>
+    <ul>
+        {% for result in results %}
+            <li>{{ result.name }} - {{ result.description }}
+                <a href="{% url 'update_view' result.pk %}">Update</a>
+                <a href="{% url 'delete_view' result.pk %}">Delete</a>
+            </li>
+        {% empty %}
+            <li>No results found</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
