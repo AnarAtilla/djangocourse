@@ -26,3 +26,8 @@ media/
 
 # Ignore static files collected by Django
 staticfiles/
+
+# Ignore log files
+
+# Ignore specific directory
+logs/
