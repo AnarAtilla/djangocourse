@@ -1,12 +1,12 @@
-# task_manager/views.py
+# task_manager/tasks/views.py
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import PageNumberPagination
-from .models import Task
-from .serializers import TaskSerializer
+from .models import Task, SubTask
+from .serializers import TaskSerializer, SubTaskSerializer
 from django.utils import timezone
 from django.db.models import Count
 from django.shortcuts import render
@@ -37,3 +37,15 @@ class TaskStatsView(APIView):
             'status_counts': status_counts,
             'overdue_tasks': overdue_tasks,
         })
+
+class SubTaskCreateView(generics.CreateAPIView):
+    queryset = SubTask.objects.all()
+    serializer_class = SubTaskSerializer
+
+class SubTaskListView(generics.ListAPIView):
+    queryset = SubTask.objects.all()
+    serializer_class = SubTaskSerializer
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ['status', 'deadline']
+    ordering_fields = ['deadline', 'created_at']
+    pagination_class = PageNumberPagination

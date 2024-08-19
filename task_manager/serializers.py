@@ -1,6 +1,6 @@
 # task_manager/tasks/serializers.py
 from rest_framework import serializers
-from .models import Task, Category
+from .models import Task, Category, SubTask
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,3 +21,12 @@ class TaskSerializer(serializers.ModelSerializer):
             category, created = Category.objects.get_or_create(**category_data)
             task.categories.add(category)
         return task
+
+class SubTaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubTask
+        fields = ['id', 'title', 'description', 'status', 'priority', 'deadline', 'task']
+
+    def create(self, validated_data):
+        subtask = SubTask.objects.create(**validated_data)
+        return subtask
