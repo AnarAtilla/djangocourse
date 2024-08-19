@@ -6,10 +6,11 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import PageNumberPagination
 from .models import Task, SubTask
-from .serializers import TaskSerializer, SubTaskSerializer
+from .serializers import TaskSerializer, SubTaskSerializer, SubTaskCreateSerializer
 from django.utils import timezone
 from django.db.models import Count
 from django.shortcuts import render
+from .filters import TaskFilter  # Импортируйте фильтр
 
 def home(request):
     return render(request, 'task_manager/home.html')
@@ -22,7 +23,7 @@ class TaskListView(generics.ListAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     filter_backends = [DjangoFilterBackend, OrderingFilter]
-    filterset_fields = ['status', 'deadline']
+    filterset_class = TaskFilter  # Используйте фильтр
     ordering_fields = ['deadline', 'created_at']
     pagination_class = PageNumberPagination
 
@@ -40,7 +41,7 @@ class TaskStatsView(APIView):
 
 class SubTaskCreateView(generics.CreateAPIView):
     queryset = SubTask.objects.all()
-    serializer_class = SubTaskSerializer
+    serializer_class = SubTaskCreateSerializer
 
 class SubTaskListView(generics.ListAPIView):
     queryset = SubTask.objects.all()
