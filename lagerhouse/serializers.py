@@ -5,44 +5,51 @@ from .models import Category, Supplier, Product, ProductDetail, Address, Custome
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = '__all__'
+        fields = ['id', 'name']
 
 class SupplierSerializer(serializers.ModelSerializer):
     class Meta:
         model = Supplier
-        fields = '__all__'
+        fields = ['id', 'name', 'contact_email', 'phone_number']
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = '__all__'
+        fields = ['id', 'name', 'category', 'supplier', 'price', 'quantity', 'article', 'available']
 
 class ProductDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductDetail
-        fields = '__all__'
+        fields = ['id', 'product', 'description', 'manufacturing_date', 'expiration_date', 'weight']
 
 class AddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = Address
-        fields = '__all__'
+        fields = ['id', 'country', 'city', 'street', 'house']
 
 class CustomerSerializer(serializers.ModelSerializer):
+    address = AddressSerializer()
+
     class Meta:
         model = Customer
-        fields = '__all__'
+        fields = ['id', 'first_name', 'last_name', 'email', 'phone_number', 'address', 'date_joined', 'deleted', 'deleted_at']
 
 class OrderSerializer(serializers.ModelSerializer):
+    customer = CustomerSerializer()
+
     class Meta:
         model = Order
-        fields = '__all__'
+        fields = ['id', 'order_date', 'customer']
 
 class OrderItemSerializer(serializers.ModelSerializer):
+    product = ProductSerializer()
+    order = OrderSerializer()
+
     class Meta:
         model = OrderItem
-        fields = '__all__'
+        fields = ['id', 'order', 'product', 'quantity', 'price']
 
 class YourModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = YourModel
-        fields = '__all__'
+        fields = ['id', 'name', 'description', 'created_at']

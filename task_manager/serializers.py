@@ -1,4 +1,3 @@
-# task_manager/tasks/serializers.py
 from rest_framework import serializers
 from .models import Task, Category, SubTask
 from django.utils import timezone

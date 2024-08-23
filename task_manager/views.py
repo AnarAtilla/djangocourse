@@ -1,4 +1,3 @@
-# task_manager/tasks/views.py
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -6,11 +5,11 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import PageNumberPagination
 from .models import Task, SubTask
-from .serializers import TaskSerializer, SubTaskSerializer, SubTaskCreateSerializer
+from .serializers import TaskSerializer, TaskDetailSerializer, SubTaskSerializer, SubTaskCreateSerializer
 from django.utils import timezone
 from django.db.models import Count
 from django.shortcuts import render
-from .filters import TaskFilter  # Импортируйте фильтр
+from .filters import TaskFilter
 
 def home(request):
     return render(request, 'task_manager/home.html')
@@ -26,6 +25,10 @@ class TaskListView(generics.ListAPIView):
     filterset_class = TaskFilter  # Используйте фильтр
     ordering_fields = ['deadline', 'created_at']
     pagination_class = PageNumberPagination
+
+class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskDetailSerializer
 
 class TaskStatsView(APIView):
     def get(self, request):
@@ -50,3 +53,7 @@ class SubTaskListView(generics.ListAPIView):
     filterset_fields = ['status', 'deadline']
     ordering_fields = ['deadline', 'created_at']
     pagination_class = PageNumberPagination
+
+class SubTaskDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = SubTask.objects.all()
+    serializer_class = SubTaskSerializer
