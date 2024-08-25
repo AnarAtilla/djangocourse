@@ -119,4 +119,3 @@ STATICFILES_DIRS = (BASE_DIR / 'static',)
 
 # Whitenoise settings for serving static files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-

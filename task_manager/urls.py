@@ -5,7 +5,6 @@ urlpatterns = [
     path('', home, name='home'),
     path('task/create/', TaskCreateView.as_view(), name='task-create'),
     path('task/list/', TaskListView.as_view(), name='task-list'),
-    path('task/list/<int:pk>/', TaskListView.as_view(), name='task-list-detail'),  # Добавленный путь
     path('task/<int:pk>/', TaskDetailView.as_view(), name='task-detail'),
     path('task/stats/', TaskStatsView.as_view(), name='task-stats'),
     path('subtask/create/', SubTaskCreateView.as_view(), name='subtask-create'),

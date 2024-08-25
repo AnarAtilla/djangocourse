@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import PageNumberPagination
+
 from .models import Task, SubTask
 from .serializers import TaskSerializer, TaskDetailSerializer, SubTaskSerializer, SubTaskCreateSerializer
 from django.utils import timezone
@@ -22,13 +23,15 @@ class TaskListView(generics.ListAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     filter_backends = [DjangoFilterBackend, OrderingFilter]
-    filterset_class = TaskFilter  # Используйте фильтр
+
+    filterset_class = TaskFilter  # Use the filter
     ordering_fields = ['deadline', 'created_at']
     pagination_class = PageNumberPagination
 
 class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskDetailSerializer
+
 
 class TaskStatsView(APIView):
     def get(self, request):
@@ -42,6 +45,7 @@ class TaskStatsView(APIView):
             'overdue_tasks': overdue_tasks,
         })
 
+# SubTask Views
 class SubTaskCreateView(generics.CreateAPIView):
     queryset = SubTask.objects.all()
     serializer_class = SubTaskCreateSerializer
@@ -50,7 +54,7 @@ class SubTaskListView(generics.ListAPIView):
     queryset = SubTask.objects.all()
     serializer_class = SubTaskSerializer
     filter_backends = [DjangoFilterBackend, OrderingFilter]
-    filterset_fields = ['status', 'deadline']
+    filter_fields = ['status', 'deadline']  # Filter by status and deadline
     ordering_fields = ['deadline', 'created_at']
     pagination_class = PageNumberPagination
 
