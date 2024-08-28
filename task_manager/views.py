@@ -4,13 +4,13 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import PageNumberPagination
-
 from .models import Task, SubTask
 from .serializers import TaskSerializer, TaskDetailSerializer, SubTaskSerializer, SubTaskCreateSerializer
 from django.utils import timezone
 from django.db.models import Count
 from django.shortcuts import render
 from .filters import TaskFilter
+from rest_framework.permissions import IsAuthenticated
 
 def home(request):
     return render(request, 'task_manager/home.html')
@@ -18,22 +18,31 @@ def home(request):
 class TaskCreateView(generics.CreateAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
+    permission_classes = [IsAuthenticated]
 
 class TaskListView(generics.ListAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     filter_backends = [DjangoFilterBackend, OrderingFilter]
+    permission_classes = [IsAuthenticated]
 
     filterset_class = TaskFilter  # Use the filter
     ordering_fields = ['deadline', 'created_at']
     pagination_class = PageNumberPagination
 
+class TaskRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+    permission_classes = [IsAuthenticated]
+
 class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskDetailSerializer
-
+    permission_classes = [IsAuthenticated]
 
 class TaskStatsView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         total_tasks = Task.objects.count()
         status_counts = Task.objects.values('status').annotate(count=Count('status'))
@@ -49,11 +58,14 @@ class TaskStatsView(APIView):
 class SubTaskCreateView(generics.CreateAPIView):
     queryset = SubTask.objects.all()
     serializer_class = SubTaskCreateSerializer
+    permission_classes = [IsAuthenticated]
 
 class SubTaskListView(generics.ListAPIView):
     queryset = SubTask.objects.all()
     serializer_class = SubTaskSerializer
     filter_backends = [DjangoFilterBackend, OrderingFilter]
+    permission_classes = [IsAuthenticated]
+
     filter_fields = ['status', 'deadline']  # Filter by status and deadline
     ordering_fields = ['deadline', 'created_at']
     pagination_class = PageNumberPagination
@@ -61,3 +73,4 @@ class SubTaskListView(generics.ListAPIView):
 class SubTaskDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = SubTask.objects.all()
     serializer_class = SubTaskSerializer
+    permission_classes = [IsAuthenticated]

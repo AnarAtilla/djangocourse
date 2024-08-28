@@ -1,5 +1,3 @@
-#D:\djangocourse\mypro\task_manager\serializers.py
-
 from rest_framework import serializers
 from .models import Task, Category, SubTask
 from django.utils import timezone
@@ -10,7 +8,7 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 class TaskSerializer(serializers.ModelSerializer):
-    categories = CategorySerializer(many=True)
+    categories = serializers.PrimaryKeyRelatedField(many=True, queryset=Category.objects.all())
 
     class Meta:
         model = Task
@@ -19,9 +17,7 @@ class TaskSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         categories_data = validated_data.pop('categories')
         task = Task.objects.create(**validated_data)
-        for category_data in categories_data:
-            category, created = Category.objects.get_or_create(**category_data)
-            task.categories.add(category)
+        task.categories.set(categories_data)
         return task
 
 class SubTaskSerializer(serializers.ModelSerializer):
