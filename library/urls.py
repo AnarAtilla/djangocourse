@@ -1,9 +1,9 @@
-# library/urls.py
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import (
     AuthorViewSet, BookViewSet, MemberViewSet, BorrowViewSet, EventViewSet, PostsViewSet,
-    CategoryViewSet, LibraryViewSet, ReviewViewSet, AuthorDetailViewSet, EventParticipantViewSet, home
+    CategoryViewSet, LibraryViewSet, ReviewViewSet, AuthorDetailViewSet, EventParticipantViewSet, home,
+    TemporaryPermissionViewSet
 )
 
 router = DefaultRouter()
@@ -18,6 +18,7 @@ router.register(r'libraries', LibraryViewSet, basename='library')
 router.register(r'reviews', ReviewViewSet, basename='review')
 router.register(r'author-details', AuthorDetailViewSet, basename='author-detail')
 router.register(r'event-participants', EventParticipantViewSet, basename='event-participant')
+router.register(r'temporary-permissions', TemporaryPermissionViewSet, basename='temporary-permission')
 
 urlpatterns = [
     path('', include(router.urls)),

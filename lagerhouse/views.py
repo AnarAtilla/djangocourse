@@ -1,90 +1,63 @@
-# lagerhouse/views.py
-from rest_framework import generics
+from rest_framework import viewsets
 from .models import Category, Supplier, Product, ProductDetail, Address, Customer, Order, OrderItem, YourModel
-from .serializers import CategorySerializer, SupplierSerializer, ProductSerializer, ProductDetailSerializer, AddressSerializer, CustomerSerializer, OrderSerializer, OrderItemSerializer, YourModelSerializer
-from .filters import CategoryFilter, SupplierFilter, ProductFilter, ProductDetailFilter, AddressFilter, CustomerFilter, OrderFilter, OrderItemFilter, YourModelFilter
+from .serializers import (
+    LagerhouseCategorySerializer, LagerhouseSupplierSerializer, LagerhouseProductSerializer, LagerhouseProductDetailSerializer,
+    LagerhouseAddressSerializer, LagerhouseCustomerSerializer, LagerhouseOrderSerializer, LagerhouseOrderItemSerializer,
+    LagerhouseYourModelSerializer
+)
+from .filters import (
+    CategoryFilter, SupplierFilter, ProductFilter, ProductDetailFilter, AddressFilter, CustomerFilter, OrderFilter,
+    OrderItemFilter, YourModelFilter
+)
 from django.shortcuts import render
 
-class CategoryListCreateView(generics.ListCreateAPIView):
+class BaseViewSet(viewsets.ModelViewSet):
+    filterset_fields = '__all__'
+
+class CategoryViewSet(BaseViewSet):
     queryset = Category.objects.all().order_by('id')
-    serializer_class = CategorySerializer
+    serializer_class = LagerhouseCategorySerializer
     filterset_class = CategoryFilter
 
-class CategoryRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Category.objects.all().order_by('id')
-    serializer_class = CategorySerializer
-
-class SupplierListCreateView(generics.ListCreateAPIView):
+class SupplierViewSet(BaseViewSet):
     queryset = Supplier.objects.all().order_by('id')
-    serializer_class = SupplierSerializer
+    serializer_class = LagerhouseSupplierSerializer
     filterset_class = SupplierFilter
 
-class SupplierRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Supplier.objects.all().order_by('id')
-    serializer_class = SupplierSerializer
-
-class ProductListCreateView(generics.ListCreateAPIView):
+class ProductViewSet(BaseViewSet):
     queryset = Product.objects.all().order_by('id')
-    serializer_class = ProductSerializer
+    serializer_class = LagerhouseProductSerializer
     filterset_class = ProductFilter
 
-class ProductRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Product.objects.all().order_by('id')
-    serializer_class = ProductSerializer
-
-class ProductDetailListCreateView(generics.ListCreateAPIView):
+class ProductDetailViewSet(BaseViewSet):
     queryset = ProductDetail.objects.all().order_by('id')
-    serializer_class = ProductDetailSerializer
+    serializer_class = LagerhouseProductDetailSerializer
     filterset_class = ProductDetailFilter
 
-class ProductDetailRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = ProductDetail.objects.all().order_by('id')
-    serializer_class = ProductDetailSerializer
-
-class AddressListCreateView(generics.ListCreateAPIView):
+class AddressViewSet(BaseViewSet):
     queryset = Address.objects.all().order_by('id')
-    serializer_class = AddressSerializer
+    serializer_class = LagerhouseAddressSerializer
     filterset_class = AddressFilter
 
-class AddressRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Address.objects.all().order_by('id')
-    serializer_class = AddressSerializer
-
-class CustomerListCreateView(generics.ListCreateAPIView):
+class CustomerViewSet(BaseViewSet):
     queryset = Customer.objects.all().order_by('id')
-    serializer_class = CustomerSerializer
+    serializer_class = LagerhouseCustomerSerializer
     filterset_class = CustomerFilter
 
-class CustomerRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Customer.objects.all().order_by('id')
-    serializer_class = CustomerSerializer
-
-class OrderListCreateView(generics.ListCreateAPIView):
+class OrderViewSet(BaseViewSet):
     queryset = Order.objects.all().order_by('id')
-    serializer_class = OrderSerializer
+    serializer_class = LagerhouseOrderSerializer
     filterset_class = OrderFilter
 
-class OrderRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Order.objects.all().order_by('id')
-    serializer_class = OrderSerializer
-
-class OrderItemListCreateView(generics.ListCreateAPIView):
+class OrderItemViewSet(BaseViewSet):
     queryset = OrderItem.objects.all().order_by('id')
-    serializer_class = OrderItemSerializer
+    serializer_class = LagerhouseOrderItemSerializer
     filterset_class = OrderItemFilter
 
-class OrderItemRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = OrderItem.objects.all().select_related('product', 'order').order_by('id')
-    serializer_class = OrderItemSerializer
-
-class YourModelListCreateView(generics.ListCreateAPIView):
+class YourModelViewSet(BaseViewSet):
     queryset = YourModel.objects.all().order_by('id')
-    serializer_class = YourModelSerializer
+    serializer_class = LagerhouseYourModelSerializer
     filterset_class = YourModelFilter
-
-class YourModelRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = YourModel.objects.all().order_by('id')
-    serializer_class = YourModelSerializer
 
 def home(request):
     return render(request, 'lagerhouse/home.html')

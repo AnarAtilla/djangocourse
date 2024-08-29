@@ -3,6 +3,8 @@ import dj_database_url
 from dotenv import load_dotenv
 from pathlib import Path
 
+TIME_ZONE = 'UTC'
+USE_TZ = True
 
 # Загрузка переменных окружения из .env файла
 load_dotenv()
@@ -27,19 +29,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'admin_interface',
+    'colorfield',
     'whitenoise.runserver_nostatic',
     'rest_framework_simplejwt',
+    'drf_spectacular',
+    'drf_yasg',
     'library',
     'lagerhouse',
-    'drf_spectacular',
     'task_manager',
     'project_tasks',
-    'admin_interface',
     'debug_toolbar',
     'django_filters',
-    'colorfield',
     'rest_framework',
-    # Other apps
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'mypro.urls'  # Убедитесь, что это правильно
@@ -72,6 +76,21 @@ TEMPLATES = [
         },
     },
 ]
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Your Project API',
+    'DESCRIPTION': 'Your project description',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
+}
+
+
+SWAGGER_SETTINGS = {
+    'ENUM_NAME_OVERRIDES': {
+        'StatusEnum': 'your_app.models.StatusChoices',
+    },
+}
 
 WSGI_APPLICATION = 'mypro.wsgi.application'
 
@@ -111,7 +130,10 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
-    'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework_simplejwt.authentication.JWTAuthentication',),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ),
 }
 
 STATIC_URL = '/static/'

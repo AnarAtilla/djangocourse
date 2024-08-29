@@ -1,13 +1,14 @@
-from django.urls import path
-from .views import home, TaskCreateView, TaskListView, TaskDetailView, TaskStatsView, SubTaskCreateView, SubTaskListView, SubTaskDetailView
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import TaskViewSet, SubTaskViewSet, TaskStatsView, CategoryViewSet, home
+
+router = DefaultRouter()
+router.register(r'tasks', TaskViewSet, basename='task')
+router.register(r'subtasks', SubTaskViewSet, basename='subtask')
+router.register(r'categories', CategoryViewSet, basename='category')
 
 urlpatterns = [
-    path('', home, name='home'),
-    path('task/create/', TaskCreateView.as_view(), name='task-create'),
-    path('task/list/', TaskListView.as_view(), name='task-list'),
-    path('task/<int:pk>/', TaskDetailView.as_view(), name='task-detail'),
-    path('task/stats/', TaskStatsView.as_view(), name='task-stats'),
-    path('subtask/create/', SubTaskCreateView.as_view(), name='subtask-create'),
-    path('subtask/list/', SubTaskListView.as_view(), name='subtask-list'),
-    path('subtask/<int:pk>/', SubTaskDetailView.as_view(), name='subtask-detail'),
+    path('', include(router.urls)),
+    path('stats/', TaskStatsView.as_view(), name='task-stats'),
+    path('home/', home, name='task_manager-home'),
 ]

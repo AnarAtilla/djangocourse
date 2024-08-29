@@ -1,58 +1,62 @@
-# library/serializers.py
 from rest_framework import serializers
-from .models import Author, Book, Member, Borrow, Event, Posts, Category, Library, Review, AuthorDetail, EventParticipant
+from .models import Author, Book, Member, Borrow, Event, Posts, Category, Library, Review, AuthorDetail, EventParticipant, TemporaryPermission
 
-class AuthorSerializer(serializers.ModelSerializer):
+class LibraryAuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
         fields = '__all__'
 
-class BookSerializer(serializers.ModelSerializer):
+class LibraryBookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
         fields = '__all__'
 
-class MemberSerializer(serializers.ModelSerializer):
+class LibraryMemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
         fields = '__all__'
 
-class BorrowSerializer(serializers.ModelSerializer):
+class LibraryBorrowSerializer(serializers.ModelSerializer):
     class Meta:
         model = Borrow
         fields = '__all__'
 
-class EventSerializer(serializers.ModelSerializer):
+class LibraryEventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = '__all__'
 
-class PostsSerializer(serializers.ModelSerializer):
+class LibraryPostsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Posts
         fields = '__all__'
 
-class CategorySerializer(serializers.ModelSerializer):
+class LibraryCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
 
-class LibrarySerializer(serializers.ModelSerializer):
+class LibraryLibrarySerializer(serializers.ModelSerializer):
     class Meta:
         model = Library
         fields = '__all__'
 
-class ReviewSerializer(serializers.ModelSerializer):
+class LibraryReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = '__all__'
 
-class AuthorDetailSerializer(serializers.ModelSerializer):
+class LibraryAuthorDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = AuthorDetail
         fields = '__all__'
 
-class EventParticipantSerializer(serializers.ModelSerializer):
+class LibraryEventParticipantSerializer(serializers.ModelSerializer):
     class Meta:
         model = EventParticipant
         fields = '__all__'
+
+class LibraryTemporaryPermissionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TemporaryPermission
+        fields = ['id', 'user', 'permission', 'start_time', 'end_time']

@@ -1,48 +1,33 @@
-# project_tasks/views.py
-from rest_framework import generics
+from rest_framework import viewsets
 from .models import Event, Task, Project, Tag, ProjectFile
-from .serializers import EventSerializer, TaskSerializer, ProjectSerializer, TagSerializer, ProjectFileSerializer
+from .serializers import (
+    ProjectTasksEventSerializer, ProjectTasksTaskSerializer, ProjectTasksProjectSerializer,
+    ProjectTasksTagSerializer, ProjectTasksProjectFileSerializer
+)
 from django.shortcuts import render
 
-class EventListCreateView(generics.ListCreateAPIView):
+class BaseViewSet(viewsets.ModelViewSet):
+    pass
+
+class EventViewSet(BaseViewSet):
     queryset = Event.objects.all()
-    serializer_class = EventSerializer
+    serializer_class = ProjectTasksEventSerializer
 
-class EventRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Event.objects.all()
-    serializer_class = EventSerializer
-
-class TaskListCreateView(generics.ListCreateAPIView):
+class TaskViewSet(BaseViewSet):
     queryset = Task.objects.all()
-    serializer_class = TaskSerializer
+    serializer_class = ProjectTasksTaskSerializer
 
-class TaskRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Task.objects.all()
-    serializer_class = TaskSerializer
-
-class ProjectListCreateView(generics.ListCreateAPIView):
+class ProjectViewSet(BaseViewSet):
     queryset = Project.objects.all()
-    serializer_class = ProjectSerializer
+    serializer_class = ProjectTasksProjectSerializer
 
-class ProjectRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Project.objects.all()
-    serializer_class = ProjectSerializer
-
-class TagListCreateView(generics.ListCreateAPIView):
+class TagViewSet(BaseViewSet):
     queryset = Tag.objects.all()
-    serializer_class = TagSerializer
+    serializer_class = ProjectTasksTagSerializer
 
-class TagRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Tag.objects.all()
-    serializer_class = TagSerializer
-
-class ProjectFileListCreateView(generics.ListCreateAPIView):
+class ProjectFileViewSet(BaseViewSet):
     queryset = ProjectFile.objects.all()
-    serializer_class = ProjectFileSerializer
-
-class ProjectFileRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = ProjectFile.objects.all()
-    serializer_class = ProjectFileSerializer
+    serializer_class = ProjectTasksProjectFileSerializer
 
 def home(request):
     return render(request, 'project_tasks/home.html')

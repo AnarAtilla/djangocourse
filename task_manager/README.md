@@ -1,34 +1,34 @@
-## Task Manager
+# Task Manager
 
 ## Описание
 
-Task Manager - это приложение для управления задачами, которое позволяет создавать, обновлять и отслеживать задачи и подзадачи.
+Task Manager - это приложение для управления задачами, которое позволяет создавать, обновлять и отслеживать задачи, подзадачи и категории.
 
 ## Модели
 
-### Category
+### Category (Категория)
 
-- `name`: CharField (max_length=100, unique=True)
+- `name`: CharField (max_length=100, unique=True) - название категории.
 
-### Task
+### Task (Задача)
 
-- `title`: CharField (max_length=200, unique=True)
-- `description`: TextField
-- `categories`: ManyToManyField (Category)
-- `status`: CharField (max_length=20, choices=STATUS_CHOICES, default='new')
-- `priority`: IntegerField (default=1)
-- `deadline`: DateTimeField
-- `created_at`: DateTimeField (auto_now_add=True)
+- `title`: CharField (max_length=200, unique=True) - заголовок задачи.
+- `description`: TextField - описание задачи.
+- `categories`: ManyToManyField (Category) - категории, к которым относится задача.
+- `status`: CharField (max_length=20, choices=STATUS_CHOICES, default='new') - статус задачи.
+- `priority`: IntegerField (default=1) - приоритет задачи.
+- `deadline`: DateTimeField - крайний срок выполнения задачи.
+- `created_at`: DateTimeField (auto_now_add=True) - время создания задачи.
 
-### SubTask
+### SubTask (Подзадача)
 
-- `title`: CharField (max_length=200, unique=True)
-- `description`: TextField
-- `task`: ForeignKey (Task, related_name='subtasks', on_delete=models.CASCADE)
-- `status`: CharField (max_length=20, choices=STATUS_CHOICES, default='new')
-- `priority`: IntegerField (default=1)
-- `deadline`: DateTimeField
-- `created_at`: DateTimeField (auto_now_add=True)
+- `title`: CharField (max_length=200, unique=True) - заголовок подзадачи.
+- `description`: TextField - описание подзадачи.
+- `task`: ForeignKey (Task, related_name='subtasks', on_delete=models.CASCADE) - задача, к которой относится подзадача.
+- `status`: CharField (max_length=20, choices=STATUS_CHOICES, default='new') - статус подзадачи.
+- `priority`: IntegerField (default=1) - приоритет подзадачи.
+- `deadline`: DateTimeField - крайний срок выполнения подзадачи.
+- `created_at`: DateTimeField (auto_now_add=True) - время создания подзадачи.
 
 ## Административная панель
 

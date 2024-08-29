@@ -1,13 +1,19 @@
 from rest_framework import serializers
 from .models import Task, Category, SubTask
 from django.utils import timezone
+from django.db.models import Count
 
-class CategorySerializer(serializers.ModelSerializer):
+class TaskManagerCategorySerializer(serializers.ModelSerializer):
+    task_count = serializers.SerializerMethodField()
+
     class Meta:
         model = Category
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'task_count']
 
-class TaskSerializer(serializers.ModelSerializer):
+    def get_task_count(self, obj):
+        return Task.objects.filter(categories=obj).count()
+
+class TaskManagerTaskSerializer(serializers.ModelSerializer):
     categories = serializers.PrimaryKeyRelatedField(many=True, queryset=Category.objects.all())
 
     class Meta:
@@ -20,7 +26,7 @@ class TaskSerializer(serializers.ModelSerializer):
         task.categories.set(categories_data)
         return task
 
-class SubTaskSerializer(serializers.ModelSerializer):
+class TaskManagerSubTaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = SubTask
         fields = ['id', 'title', 'description', 'status', 'priority', 'deadline', 'task']
@@ -29,14 +35,14 @@ class SubTaskSerializer(serializers.ModelSerializer):
         subtask = SubTask.objects.create(**validated_data)
         return subtask
 
-class SubTaskCreateSerializer(serializers.ModelSerializer):
+class TaskManagerSubTaskCreateSerializer(serializers.ModelSerializer):
     created_at = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = SubTask
         fields = ['id', 'title', 'description', 'status', 'priority', 'deadline', 'task', 'created_at']
 
-class CategoryCreateSerializer(serializers.ModelSerializer):
+class TaskManagerCategoryCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'name']
@@ -53,14 +59,15 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Category with this name already exists.")
         return super().update(instance, validated_data)
 
-class TaskDetailSerializer(serializers.ModelSerializer):
-    subtasks = SubTaskSerializer(many=True, read_only=True)
+class TaskManagerTaskDetailSerializer(serializers.ModelSerializer):
+    subtasks = TaskManagerSubTaskSerializer(many=True, read_only=True)
+    categories = TaskManagerCategorySerializer(many=True, read_only=True)
 
     class Meta:
         model = Task
         fields = ['id', 'title', 'description', 'status', 'deadline', 'categories', 'subtasks']
 
-class TaskCreateSerializer(serializers.ModelSerializer):
+class TaskManagerTaskCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = ['id', 'title', 'description', 'status', 'deadline', 'categories']

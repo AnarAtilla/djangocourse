@@ -1,3 +1,5 @@
+# library/models.py
+from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils import timezone
@@ -142,3 +144,16 @@ class EventParticipant(models.Model):
 
     def __str__(self):
         return f"{self.member} at {self.event}"
+
+class TemporaryPermission(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='temporary_permissions')
+    permission = models.CharField(max_length=255, verbose_name="Permission")
+    start_time = models.DateTimeField(verbose_name="Start Time")
+    end_time = models.DateTimeField(verbose_name="End Time")
+
+    def is_active(self):
+        now = timezone.now()
+        return self.start_time <= now <= self.end_time
+
+    def __str__(self):
+        return f"{self.user} - {self.permission} ({self.start_time} to {self.end_time})"
