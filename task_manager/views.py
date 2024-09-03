@@ -1,26 +1,21 @@
-from django.db.models import Count
-from django.shortcuts import render
-from django.utils import timezone
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
+from .models import Task, SubTask, Category
+from .serializers import (
+    TaskManagerTaskSerializer, TaskManagerTaskDetailSerializer, TaskManagerSubTaskSerializer,
+    TaskManagerCategorySerializer
+)
+from .permissions import IsOwnerOrReadOnly
 from rest_framework.decorators import action
+from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.views import APIView
-
 from .filters import TaskFilter
-from .models import Category, Task
-from .models import SubTask
-from .serializers import TaskManagerCategorySerializer
-from .serializers import (
-    TaskManagerTaskSerializer, TaskManagerTaskDetailSerializer, TaskManagerSubTaskSerializer
-)
-
-
-def home(request):
-    return render(request, 'task_manager/home.html')
+from rest_framework.views import APIView
+from django.db.models import Count
+from django.utils import timezone
+from django.shortcuts import render
 
 class BaseViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
@@ -32,17 +27,31 @@ class TaskViewSet(BaseViewSet):
     serializer_class = TaskManagerTaskSerializer
     filterset_class = TaskFilter
     ordering_fields = ['deadline', 'created_at']
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
             return TaskManagerTaskDetailSerializer
         return super().get_serializer_class()
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+    @action(detail=False, methods=['get'])
+    def my_tasks(self, request):
+        tasks = Task.objects.filter(owner=request.user)
+        serializer = self.get_serializer(tasks, many=True)
+        return Response(serializer.data)
+
 class SubTaskViewSet(BaseViewSet):
     queryset = SubTask.objects.all()
     serializer_class = TaskManagerSubTaskSerializer
     filter_fields = ['status', 'deadline']
     ordering_fields = ['deadline', 'created_at']
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
 class TaskStatsView(APIView):
     permission_classes = [IsAuthenticated]
@@ -59,7 +68,7 @@ class TaskStatsView(APIView):
         })
 
 class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all().order_by('id')  # Добавлен порядок сортировки
+    queryset = Category.objects.all().order_by('id')
     serializer_class = TaskManagerCategorySerializer
 
     @action(detail=True, methods=['get'])
@@ -67,3 +76,6 @@ class CategoryViewSet(viewsets.ModelViewSet):
         category = self.get_object()
         task_count = Task.objects.filter(categories=category).count()
         return Response({'task_count': task_count})
+
+def home(request):
+    return render(request, 'task_manager/home.html')

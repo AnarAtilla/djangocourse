@@ -1,4 +1,4 @@
-# task_manager/tasks/models.py
+from django.contrib.auth.models import User
 from django.db import models
 
 class Category(models.Model):
@@ -29,6 +29,7 @@ class Task(models.Model):
     priority = models.IntegerField(default=1)
     deadline = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='task_manager_tasks')
 
     def __str__(self):
         return self.title
@@ -56,6 +57,7 @@ class SubTask(models.Model):
     priority = models.IntegerField(default=1)
     deadline = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='task_manager_subtasks')
 
     def __str__(self):
         return self.title

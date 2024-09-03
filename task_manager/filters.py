@@ -1,4 +1,3 @@
-# task_manager/tasks/filters.py
 import django_filters
 from .models import Task
 

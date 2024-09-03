@@ -91,6 +91,7 @@ SPECTACULAR_SETTINGS = {
 SWAGGER_SETTINGS = {
     'ENUM_NAME_OVERRIDES': {
         'StatusEnum': 'your_app.models.StatusChoices',
+        'AnotherStatusEnum': 'another_app.models.StatusChoices',
     },
 }
 

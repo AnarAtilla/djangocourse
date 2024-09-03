@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .models import Task, Category, SubTask
 from django.utils import timezone
-from django.db.models import Count
 
 class TaskManagerCategorySerializer(serializers.ModelSerializer):
     task_count = serializers.SerializerMethodField()
@@ -18,7 +17,8 @@ class TaskManagerTaskSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
-        fields = ['id', 'title', 'description', 'status', 'deadline', 'categories']
+        fields = ['id', 'title', 'description', 'status', 'deadline', 'categories', 'owner']
+        read_only_fields = ['owner']
 
     def create(self, validated_data):
         categories_data = validated_data.pop('categories')
@@ -29,7 +29,8 @@ class TaskManagerTaskSerializer(serializers.ModelSerializer):
 class TaskManagerSubTaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = SubTask
-        fields = ['id', 'title', 'description', 'status', 'priority', 'deadline', 'task']
+        fields = ['id', 'title', 'description', 'status', 'priority', 'deadline', 'task', 'owner']
+        read_only_fields = ['owner']
 
     def create(self, validated_data):
         subtask = SubTask.objects.create(**validated_data)
@@ -40,7 +41,8 @@ class TaskManagerSubTaskCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SubTask
-        fields = ['id', 'title', 'description', 'status', 'priority', 'deadline', 'task', 'created_at']
+        fields = ['id', 'title', 'description', 'status', 'priority', 'deadline', 'task', 'created_at', 'owner']
+        read_only_fields = ['owner']
 
 class TaskManagerCategoryCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -65,12 +67,14 @@ class TaskManagerTaskDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
-        fields = ['id', 'title', 'description', 'status', 'deadline', 'categories', 'subtasks']
+        fields = ['id', 'title', 'description', 'status', 'deadline', 'categories', 'subtasks', 'owner']
+        read_only_fields = ['owner']
 
 class TaskManagerTaskCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
-        fields = ['id', 'title', 'description', 'status', 'deadline', 'categories']
+        fields = ['id', 'title', 'description', 'status', 'deadline', 'categories', 'owner']
+        read_only_fields = ['owner']
 
     def validate_deadline(self, value):
         if value < timezone.now():
