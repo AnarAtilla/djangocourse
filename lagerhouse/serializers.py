@@ -34,11 +34,15 @@ class LagerhouseCustomerSerializer(serializers.ModelSerializer):
         fields = ['id', 'first_name', 'last_name', 'email', 'phone_number', 'address', 'date_joined', 'deleted', 'deleted_at']
 
 class LagerhouseOrderSerializer(serializers.ModelSerializer):
-    customer = LagerhouseCustomerSerializer()
-
     class Meta:
         model = Order
         fields = ['id', 'order_date', 'customer']
+
+    def create(self, validated_data):
+        request = self.context.get('request', None)
+        if request and request.user.is_authenticated:
+            validated_data['customer'] = request.user.customer
+        return super().create(validated_data)
 
 class LagerhouseOrderItemSerializer(serializers.ModelSerializer):
     product = LagerhouseProductSerializer()

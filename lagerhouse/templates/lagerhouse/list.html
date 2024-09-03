@@ -13,14 +13,16 @@
         <button type="submit">Search</button>
     </form>
     <ul>
-        {% for result in results %}
-            <li>{{ result.name }} - {{ result.description }}
-                <a href="{% url 'update_view' result.pk %}">Update</a>
-                <a href="{% url 'delete_view' result.pk %}">Delete</a>
-            </li>
-        {% empty %}
+        {% if results %}
+            {% for result in results %}
+                <li>{{ result.name }} - {{ result.description }}
+                    <a href="{% url 'update_view' result.pk %}">Update</a>
+                    <a href="{% url 'delete_view' result.pk %}">Delete</a>
+                </li>
+            {% endfor %}
+        {% else %}
             <li>No results found</li>
-        {% endfor %}
+        {% endif %}
     </ul>
 </body>
 </html>

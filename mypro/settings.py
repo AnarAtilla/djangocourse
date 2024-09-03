@@ -6,6 +6,10 @@ from pathlib import Path
 TIME_ZONE = 'UTC'
 USE_TZ = True
 
+# DEBUG_TOOLBAR_CONFIG = {
+#     'INTERCEPT_REDIRECTS': False,
+# }
+
 # Загрузка переменных окружения из .env файла
 load_dotenv()
 
@@ -39,7 +43,6 @@ INSTALLED_APPS = [
     'lagerhouse',
     'task_manager',
     'project_tasks',
-    'debug_toolbar',
     'django_filters',
     'rest_framework',
     'rest_framework.authtoken',
@@ -54,7 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
@@ -85,7 +88,6 @@ SPECTACULAR_SETTINGS = {
     # OTHER SETTINGS
 }
 
-
 SWAGGER_SETTINGS = {
     'ENUM_NAME_OVERRIDES': {
         'StatusEnum': 'your_app.models.StatusChoices',
@@ -105,25 +107,6 @@ DATABASES = {
 if DATABASES['default']['ENGINE'] == 'django.db.backends.sqlite3':
     DATABASES['default'].pop('sslmode', None)
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': BASE_DIR / 'debug.log',
-            'encoding': 'utf-8',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
-}
 
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
@@ -144,3 +127,23 @@ STATICFILES_DIRS = (BASE_DIR / 'static',)
 
 # Whitenoise settings for serving static files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+        'lagerhouse': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+    },
+}

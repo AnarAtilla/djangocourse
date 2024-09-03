@@ -1,4 +1,9 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.db.models.signals import post_migrate
+from django.dispatch import receiver
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
 
 class Category(models.Model):
     name = models.CharField(max_length=40, unique=True)
@@ -10,7 +15,6 @@ class Category(models.Model):
         ordering = ['name']
         verbose_name_plural = 'categories'
 
-
 class Supplier(models.Model):
     name = models.CharField(max_length=100, unique=True)
     contact_email = models.EmailField(unique=True)
@@ -18,7 +22,6 @@ class Supplier(models.Model):
 
     def __str__(self):
         return self.name
-
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
@@ -35,7 +38,6 @@ class Product(models.Model):
     class Meta:
         ordering = ['category', 'quantity']
 
-
 class ProductDetail(models.Model):
     product = models.OneToOneField(Product, on_delete=models.CASCADE, related_name='details')
     description = models.TextField(null=True, blank=True)
@@ -45,7 +47,6 @@ class ProductDetail(models.Model):
 
     def __str__(self):
         return f"Details of {self.product.name}"
-
 
 class Address(models.Model):
     country = models.CharField(max_length=100)
@@ -59,8 +60,8 @@ class Address(models.Model):
     class Meta:
         verbose_name_plural = 'addresses'
 
-
 class Customer(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField(unique=True)
@@ -77,7 +78,6 @@ class Customer(models.Model):
         ordering = ['-date_joined']
         get_latest_by = 'date_joined'
 
-
 class Order(models.Model):
     order_date = models.DateTimeField(auto_now_add=True)
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name='orders')
@@ -89,7 +89,6 @@ class Order(models.Model):
         ordering = ['-order_date']
         get_latest_by = 'order_date'
 
-
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items')
     product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='order_items')
@@ -98,7 +97,6 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.quantity} x {self.product.name} for {self.order}"
-
 
 class YourModel(models.Model):
     name = models.CharField(max_length=100)
@@ -110,3 +108,13 @@ class YourModel(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+
+@receiver(post_migrate)
+def add_custom_permissions(sender, **kwargs):
+    if sender.name == 'lagerhouse':
+        content_type = ContentType.objects.get_for_model(Customer)
+        Permission.objects.get_or_create(
+            codename='can_view_statistics',
+            name='Can View Statistics',
+            content_type=content_type,
+        )
