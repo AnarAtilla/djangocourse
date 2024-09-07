@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from .models import Task, SubTask, Category
 from .serializers import (
     TaskManagerTaskSerializer, TaskManagerTaskDetailSerializer, TaskManagerSubTaskSerializer,
-    TaskManagerCategorySerializer
+    TaskManagerCategorySerializer, TaskStatsSerializer
 )
 from .permissions import IsOwnerOrReadOnly
 from rest_framework.decorators import action
@@ -46,7 +46,7 @@ class TaskViewSet(BaseViewSet):
 class SubTaskViewSet(BaseViewSet):
     queryset = SubTask.objects.all()
     serializer_class = TaskManagerSubTaskSerializer
-    filter_fields = ['status', 'deadline']
+    filterset_fields = ['status', 'deadline']
     ordering_fields = ['deadline', 'created_at']
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
 
@@ -55,17 +55,22 @@ class SubTaskViewSet(BaseViewSet):
 
 class TaskStatsView(APIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = TaskStatsSerializer
 
     def get(self, request):
         total_tasks = Task.objects.count()
         status_counts = Task.objects.values('status').annotate(count=Count('status'))
         overdue_tasks = Task.objects.filter(deadline__lt=timezone.now()).count()
 
-        return Response({
+        # Преобразуем status_counts в словарь
+        status_counts_dict = {item['status']: item['count'] for item in status_counts}
+
+        serializer = self.serializer_class({
             'total_tasks': total_tasks,
-            'status_counts': status_counts,
+            'status_counts': status_counts_dict,
             'overdue_tasks': overdue_tasks,
         })
+        return Response(serializer.data)
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all().order_by('id')

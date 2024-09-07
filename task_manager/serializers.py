@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Task, Category, SubTask
 from django.utils import timezone
+from drf_yasg.utils import swagger_serializer_method
 
 class TaskManagerCategorySerializer(serializers.ModelSerializer):
     task_count = serializers.SerializerMethodField()
@@ -9,6 +10,7 @@ class TaskManagerCategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ['id', 'name', 'task_count']
 
+    @swagger_serializer_method(serializer_or_field=serializers.IntegerField)
     def get_task_count(self, obj):
         return Task.objects.filter(categories=obj).count()
 
@@ -80,3 +82,8 @@ class TaskManagerTaskCreateSerializer(serializers.ModelSerializer):
         if value < timezone.now():
             raise serializers.ValidationError("Deadline cannot be in the past.")
         return value
+
+class TaskStatsSerializer(serializers.Serializer):
+    total_tasks = serializers.IntegerField()
+    status_counts = serializers.DictField(child=serializers.IntegerField())
+    overdue_tasks = serializers.IntegerField()
